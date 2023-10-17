@@ -1,0 +1,40 @@
+TYPES : BEGIN OF ty_makt,
+    matnr TYPE makt-matnr,
+    spras TYPE makt-spras,
+    maktx TYPE makt-maktx,
+  END OF ty_makt.
+
+DATA : it_makt type TABLE OF ty_makt,
+      wa_makt like line of it_makt.
+
+wa_makt-matnr = '100'.
+wa_makt-spras = 'E'.
+wa_makt-maktx = 'Pen'.
+append wa_makt to it_makt.
+
+wa_makt-matnr = '101'.
+wa_makt-spras = 'EN'.
+wa_makt-maktx = 'Hen'.
+append wa_makt to it_makt.
+
+wa_makt-matnr = '102'.
+wa_makt-spras = 'E'.
+wa_makt-maktx = 'Penny'.
+append wa_makt to it_makt.
+
+wa_makt-matnr = '103'.
+wa_makt-spras = 'EN'.
+wa_makt-maktx = 'Sen'.
+append wa_makt to it_makt.
+
+wa_makt-matnr = '102'.
+wa_makt-spras = 'D'.
+wa_makt-maktx = 'Ten'.
+append wa_makt to it_makt.
+
+clear wa_makt.
+
+read table it_makt into wa_makt index 3.
+read table it_makt into wa_makt with key matnr = '102' maktx = 'Ten'.
+
+WRITE wa_makt.

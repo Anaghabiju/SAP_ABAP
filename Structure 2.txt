@@ -1,0 +1,67 @@
+REPORT ZANAGHA_STRUCTURE1.
+
+*Display employee details by taking employee id from user
+
+*TYPES : BEGIN OF ty_ZANA_MAKT,
+*    "MANDT TYPE ZANA_MAKT-MANDT,
+*    id TYPE ZANA_MAKT-ID,
+*    name TYPE ZANA_MAKT-NAME,
+*    salary TYPE ZANA_MAKT-SALARY,
+*  END OF ty_ZANA_MAKT.
+*
+*DATA : st_data TYPE ty_ZANA_MAKT.
+*
+*PARAMETERS p_id TYPE ZANA_MAKT-ID.
+*
+*select id name salary from ZANA_MAKT INTO st_data WHERE id eq p_id
+*
+*WRITE :/ st_data-id,
+*         st_data-name,
+*         st_data-salary.
+*ENDSELECT.
+
+
+
+*Display employee details by taking department id from user
+
+
+*TYPES : BEGIN OF ty_ZANA_MAKT,
+*
+*    name TYPE ZANA_MAKT-NAME,
+*
+*  END OF ty_ZANA_MAKT.
+*
+*DATA : st_data TYPE ty_ZANA_MAKT.
+*
+*PARAMETERS p_dept TYPE ZANA_MAKT-DEPT_ID.
+*
+*select name from ZANA_MAKT INTO st_data WHERE dept_id eq p_dept.
+*
+*WRITE :/
+*         st_data-name.
+*ENDSELECT.
+
+*Display all employee details along with dept id and dept description
+
+TYPES : BEGIN OF ty_ZANA_MAKT,
+    id TYPE ZANA_MAKT-ID,
+    name TYPE ZANA_MAKT-NAME,
+    salary TYPE ZANA_MAKT-SALARY,
+    dept_id TYPE ZANA_MAKT-DEPT_ID,
+  END OF ty_ZANA_MAKT.
+
+DATA : st_data TYPE ty_ZANA_MAKT.
+
+DATA : st_d_data TYPE ZANA_DEPT-DEPT_DESC.
+
+PARAMETERS p_id TYPE ZANA_MAKT-ID.
+
+select single id name salary dept_id from ZANA_MAKT INTO st_data WHERE id eq p_id.
+
+SELECT SINGLE dept_desc from ZANA_DEPT into st_d_data where dept_id eq st_data-DEPT_ID.
+
+WRITE :/ st_data-id,
+         st_data-name,
+         st_data-salary,
+         st_data-dept_id,
+         st_d_data.

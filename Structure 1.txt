@@ -1,0 +1,23 @@
+REPORT ZANAGHA_STRUCTURE.
+
+DATA v_matnr type makt-matnr.
+
+TYPES : BEGIN OF ty_makt,
+        matnr TYPE makt-matnr,
+        spras TYPE makt-spras,
+        maktx TYPE makt-maktx,
+      END OF ty_makt.
+
+DATA st_makt type ty_makt.
+
+v_matnr = '23'.
+*WRITE v_matnr.
+
+v_matnr = '33'.
+WRITE v_matnr.
+
+st_makt-matnr = '24'.
+*WRITE st_makt-matnr.
+
+st_makt-matnr = '42'.
+WRITE st_makt-matnr.

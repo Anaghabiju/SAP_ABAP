@@ -1,0 +1,24 @@
+REPORT ZANAGHA_INTERNAL_TABLE2.
+
+TYPES : BEGIN OF ty_marc,
+    matnr type marc-matnr,
+    werks type marc-werks,
+  END OF ty_marc.
+
+
+DATA : it_data TYPE table of ty_marc,
+       wa_data like line of it_data,
+       name TYPE t001w-name1.
+
+
+PARAMETERS p_marc TYPE marc-matnr.
+
+
+select matnr werks from marc into TABLE it_data where matnr eq p_marc.
+
+  LOOP at it_data into wa_data.
+    SELECT SINGLE name1 from t001w into name where werks eq wa_data-werks.
+WRITE :/ wa_data-matnr,
+      wa_data-werks,
+      name.
+ENDLOOP.
