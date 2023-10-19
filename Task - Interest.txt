@@ -1,0 +1,29 @@
+REPORT ZANAGHA_TASK1.
+
+PARAMETERS : p_amnt TYPE p DECIMALS 2,
+             p_per TYPE p DECIMALS 2,
+             p_days TYPE i,
+             p_check as CHECKBOX.
+
+DATA : tot_amnt TYPE p DECIMALS 2,
+      profit TYPE p DECIMALS 2.
+
+
+
+if p_check eq 'X'.
+
+    profit = p_amnt * ( p_per / 100 ) * ( p_days / 365 ).
+    tot_amnt = p_amnt + profit.
+
+  ELSE.
+      tot_amnt = p_amnt.
+
+    DO p_days TIMES.
+    profit = tot_amnt * p_per / 100 .
+    tot_amnt = tot_amnt + profit.
+    ENDDO.
+      ENDIF.
+
+    WRITE : 'Initial Amount:' ,p_amnt,/
+            'Total days:' ,p_days,/
+            'Total Amount:' ,tot_amnt.
