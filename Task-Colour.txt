@@ -1,0 +1,70 @@
+REPORT ZANAGHA_TASK2.
+
+*DATA : it_plant TYPE STANDARD TABLE OF ZAna_VIEW,
+*       wa_plant LIKE LINE OF it_plant.
+*
+*DATA : it_cktable TYPE TABLE OF ZAna_Plant,
+*      wa_cktable LIKE LINE OF it_cktable.
+*
+**PARAMETERS p_input TYPE wa_plant-werks.
+*
+*SELECT-OPTIONS s_matnr FOR wa_plant-matnr.
+*
+*
+*SELECT * FROM ZAna_VIEW INTO TABLE it_plant WHERE matnr IN s_matnr.
+*  SELECT * FROM ZAna_plant INTO TABLE it_cktable.
+*
+**READ TABLE it_cktable INTO wa_cktable WITH KEY werks = wa_dbtable-werks.
+*
+*  LOOP AT it_plant INTO wa_plant.
+*
+*IF sy-SUBRC IS INITIAL.
+*    FORMAT COLOR COL_POSITIVE.
+*  ENDIF.
+*
+*WRITE : / wa_plant-matnr, 40 wa_plant-werks, 120 wa_plant-name1.
+*    FORMAT COLOR OFF.
+*ENDLOOP.
+
+
+TYPES : BEGIN OF ty_range,
+       sign TYPE  c length 1,
+       opti type c length 2,
+  low type werks_d,
+  high type werks_d,
+  END OF ty_range.
+DATA : it_marc TYPE STANDARD TABLE OF  zana_view ,
+       wa_marc LIKE LINE OF it_marc.
+DATA : it_plant type STANDARD TABLE OF zana_plant,
+      wa_plant LIKE LINE OF it_plant.
+DATA:
+       prev_low TYPE zana_plant-low,
+      prev_high TYPE zana_plant-high.
+DATA: it_range type table of ty_range.
+
+
+
+SELECT-OPTIONS S_NUM FOR wa_marc-matnr.
+
+
+
+SELECT * FROM zana_view INTO TABLE  it_marc WHERE matnr IN s_num.
+SELECT sign opti low high from zana_plant into table it_range where name eq 'check'.
+
+
+
+  LOOP AT it_marc INTO wa_marc.
+
+
+
+IF wa_marc-werks IN it_range.
+  FORMAT COLOR COL_POSITIVE.
+  ENDIF.
+WRITE : / wa_marc-matnr,
+              wa_marc-werks,
+              wa_marc-name1.
+
+
+
+    FORMAT COLOR OFF.
+ENDLOOP.
