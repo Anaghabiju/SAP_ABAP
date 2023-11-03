@@ -1,0 +1,68 @@
+REPORT ZANAGHA_PROCESSING_BLOCKS.
+
+
+
+*DATA v_maktx TYPE maktx.
+*
+*PARAMETERS : p_matnr TYPE matnr DEFAULT 'MN100',
+*           p_date TYPE sy-datum,
+*           p_set1 AS CHECKBOX.
+*
+*START-OF-SELECTION.
+*
+* DATA v_name TYPE c LENGTH 10.
+*
+*  SELECT SINGLE maktx FROM makt INTO v_maktx WHERE matnr EQ p_matnr.
+*
+*  PERFORM show_output.
+*
+*AT LINE-SELECTION.
+*  WRITE 'Secondary List'.
+*  CALL SELECTION-SCREEN 1000.
+*FORM show_output.
+*
+*  v_name = 'Kiran'.
+*  WRITE  v_name.
+*ENDFORM.
+*
+*FORM display.
+*    v_name = 'Anagha'.
+*ENDFORM.
+*
+*AT SELECTION-SCREEN OUTPUT.
+*  p_date = sy-datum.
+*  LOOP AT SCREEN.
+*    IF screen-name = 'P_SETL'.
+*      screen-input = 0.
+*      MODIFY SCREEN.
+*    ENDIF.
+*  ENDLOOP.
+
+PARAMETERS p_matnr TYPE matnr.
+
+LOAD-OF-PROGRAM.
+WRITE : / 'Load of program'.
+
+INITIALIZATION.
+WRITE : / 'initialization'.
+
+START-OF-SELECTION.
+WRITE :  '  start-of-selection'.
+
+end-of-SELECTION.
+WRITE : / 'End-of-selection'.
+
+AT SELECTION-SCREEN.
+  WRITE : / 'At selection screen'.
+
+at SELECTION-SCREEN OUTPUT.
+  WRITE : / 'At selection screen output'.
+
+TOP-OF-PAGE.
+  WRITE : / 'top-of-page'.
+
+end-of-PAGE.
+  WRITE : / 'end-of-page'.
+
+AT LINE-SELECTION.
+  WRITE : / 'At line selection'.

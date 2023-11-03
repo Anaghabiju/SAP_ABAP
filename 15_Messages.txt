@@ -1,0 +1,21 @@
+REPORT ZANAGHA_MESSAGES.  "MESSAGE-ID ZAnagha_msg .
+
+DATA : it_makt TYPE STANDARD TABLE OF makt,
+      wa_makt LIKE LINE OF it_makt.
+
+PARAMETERS p_matnr TYPE makt-matnr.
+
+at SELECTION-SCREEN.
+SELECT * FROM makt into TABLE it_makt WHERE matnr eq p_matnr.
+
+if sy-subrc IS NOT INITIAL.  "checking whether select statement was succesful or not
+*  MESSAGE 'Please enter valid material' type 'E'. "I-Information, W-Warning, E-Error, S-Status, A-Abandon, X-Short dump
+  MESSAGE e000(ZAnagha_msg) with p_matnr.
+*  MESSAGE e000.
+*  MESSAGE | { p_matnr } is not a valid input | TYPE 'E'.
+
+  ENDIF.
+START-OF-SELECTION.
+LOOP at it_makt into wa_makt.
+  WRITE : / wa_makt-matnr, wa_makt-spras, wa_makt-maktx.
+  ENDLOOP.

@@ -1,0 +1,46 @@
+REPORT ZANAGHA_SALES_MAIN.
+
+DATA :  it_vbak TYPE zanagha_t_vbak,
+        wa_vbak LIKE LINE OF it_vbak,
+        it_header TYPE zanagha_t_header,
+        it_item TYPE zanagha_t_item.
+
+SELECT-OPTIONS s_num FOR wa_vbak-vbeln.
+
+START-OF-SELECTION.
+
+CALL FUNCTION 'Z_ANAG_HEADER'
+  EXPORTING
+    im_vbeln       = s_num[]
+ IMPORTING
+   E_HEADER       = it_header
+          .
+end-of-SELECTION.
+
+CALL FUNCTION 'Z_ANAG_WRITE'
+  EXPORTING
+    it_header_details       = it_header
+           .
+AT LINE-SELECTION.
+  DATA : fnam(20),fval(50).
+  data : v_vbeln type vbap-vbeln.
+  GET CURSOR FIELD fnam VALUE fval.
+
+CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+EXPORTING
+ input         = fval
+IMPORTING
+ OUTPUT        = v_vbeln.
+
+clear it_item.
+
+CALL FUNCTION 'Z_ANAG_ITEM'
+  EXPORTING
+    im_v_vbeln       = v_vbeln
+ IMPORTING
+   E_ITEM           = it_item
+          .
+CALL FUNCTION 'Z_ANAG_WRITE2'
+  EXPORTING
+    it_item_details       = it_item
+          .

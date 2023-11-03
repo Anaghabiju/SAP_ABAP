@@ -1,0 +1,57 @@
+REPORT ZANAGHA_OOPS.
+
+*CLASS lcl_counter DEFINITION.
+*  PUBLIC SECTION.
+*  DATA v_count type i.
+*  METHODS next_num EXPORTING number TYPE i.
+*  ENDCLASS.
+*
+*CLASS lcl_counter IMPLEMENTATION.
+*  METHOD next_num.
+*    number = v_count + 1.
+*    v_count = number.
+*    ENDMETHOD.
+*ENDCLASS.
+
+DATA v_data TYPE i.
+DATA v_tag TYPE i.
+DATA o_data TYPE REF TO ZCL_ANAGHA_ALV." lcl_counter.
+DATA o_tag TYPE REF TO ZCL_ANAGHA_ALV. "lcl_counter.
+
+START-OF-SELECTION.
+CREATE OBJECT o_data.
+CREATE OBJECT o_tag.
+
+
+o_data->next_number(
+   IMPORTING
+     number = v_data
+).
+
+o_tag->next_number(
+   IMPORTING
+     number = v_tag
+).
+
+o_data->next_number(
+   IMPORTING
+     number = v_data
+).
+
+o_tag->next_number(
+   IMPORTING
+     number = v_tag
+).
+
+o_data->next_number(
+   IMPORTING
+     number = v_data
+).
+
+o_tag->next_number(
+   IMPORTING
+     number = v_tag
+).
+
+WRITE v_data.
+WRITE v_tag.

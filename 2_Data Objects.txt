@@ -1,0 +1,78 @@
+REPORT ZANAGHA_DATA_OBJECTS.
+
+*DATA v_name type c LENGTH 10.
+*
+*DATA qty TYPE p DECIMALS 2.
+*
+*DATA qty1 TYPE i.
+*
+*DATA qty2 TYPE f.
+*
+*DATA date TYPE dats.
+*
+*DATA time type t.
+
+DATA:
+    v_name type c LENGTH 10,
+
+   qty TYPE p DECIMALS 2,
+
+   qty1 TYPE i,
+
+   qty2 TYPE f,
+
+   "date TYPE dats,
+
+   date type d,
+
+   date_out type c length 10,
+
+   time type t.
+
+v_name = 'Anagha'.
+
+qty = '10.35'.
+
+qty1 = '10'.
+
+qty2 = '-10.23'.
+
+date = '20231023'.
+
+time = '120023'.
+
+WRITE 'My name is:'.
+
+WRITE  v_name.
+
+WRITE :/ 'Decimal number is:'.
+
+WRITE qty.
+
+WRITE :/ 'Integer number is:'.
+
+WRITE qty1.
+
+WRITE :/ 'Floating number is:'.
+
+WRITE qty2.
+
+WRITE :/ 'Date is:'.
+
+WRITE date to date_out.
+
+WRITE date_out.
+
+WRITE :/ 'Time is:'.
+
+WRITE time.
+
+*User defined type
+
+*TYPES zty_names TYPE c LENGTH 30.
+data :
+      v_f_name TYPE zty_names,
+      v_l_name type zty_names.
+v_f_name = 'jfdjfvbk'.
+write :/ 'Name'.
+write v_f_name.

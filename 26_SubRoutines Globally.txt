@@ -1,0 +1,127 @@
+FUNCTION Z_ANAG_HEADER.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IM_VBELN) TYPE  ZANAGHA_T_RANGE
+*"  EXPORTING
+*"     REFERENCE(E_HEADER) TYPE  ZANAGHA_T_HEADER
+*"----------------------------------------------------------------------
+
+DATA : it_vbak TYPE  zanagha_t_vbak,
+         wa_vbak LIKE LINE OF it_vbak.
+  DATA : it_header TYPE zanagha_t_header,
+         wa_header LIKE LINE OF it_header.
+
+  DATA : it_kna1 TYPE zanagha_t_kna1,
+         wa_kna1 LIKE LINE OF it_kna1.
+  SELECT vbeln audat netwr kunnr FROM vbak INTO TABLE it_vbak WHERE vbeln IN im_vbeln.
+  SELECT kunnr name1 FROM kna1 INTO TABLE it_kna1 FOR ALL ENTRIES IN it_vbak WHERE kunnr EQ it_vbak-kunnr.
+  LOOP AT it_vbak INTO wa_vbak.
+    READ TABLE it_kna1 INTO wa_kna1 WITH KEY kunnr = wa_vbak-kunnr.
+    MOVE-CORRESPONDING wa_vbak TO wa_header.
+    MOVE-CORRESPONDING wa_kna1 TO wa_header.
+    APPEND wa_header TO e_header.
+    CLEAR wa_header.
+
+  ENDLOOP.
+
+ENDFUNCTION.
+
+
+-------------------------------------------------------------------------------
+
+FUNCTION Z_ANAG_WRITE.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IT_HEADER_DETAILS) TYPE  ZANAGHA_T_HEADER
+*"----------------------------------------------------------------------
+  DATA : wa_header LIKE LINE OF it_header_details.
+LOOP AT it_header_details INTO wa_header.
+*READ TABLE it_kna1 INTO wa_kna1 WITH KEY kunnr = wa_vbak-kunnr.
+AT FIRST.
+   WRITE :/20 'Document Number',
+    40 'Doc Date',
+    70 'Net Val',
+    90 'Sold To Party'.
+   ENDAT.
+
+*    WRITE : /20 wa_vbak-vbeln,
+*            40 wa_vbak-audat,
+*            60 wa_vbak-netwr,
+*           90  wa_kna1-name1.
+WRITE : /20 wa_header-vbeln,
+            40 wa_header-audat,
+            60 wa_header-netwr,
+           90  wa_header-name1.
+
+  ENDLOOP.
+
+-------------------------------------------------------------------------------
+
+FUNCTION Z_ANAG_ITEM.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IM_V_VBELN) TYPE  VBAK-VBELN
+*"  EXPORTING
+*"     REFERENCE(E_ITEM) TYPE  ZANAGHA_T_ITEM
+*"----------------------------------------------------------------------
+
+ DATA : it_vbap TYPE zanagha_t_vbap,
+        wa_vbap LIKE LINE OF it_vbap,
+        it_t006a TYPE zanagha_t_t006a,
+        wa_t006a like line of it_t006a,
+        it_item TYPE zanagha_t_item,
+        wa_item LIKE LINE OF it_item.
+
+  SELECT vbeln posnr pstyv arktx kwmeng zieme netwr FROM vbap INTO TABLE it_vbap WHERE vbeln EQ im_v_vbeln.
+    SELECT msehi msehl FROM t006a INTO TABLE it_t006a FOR ALL ENTRIES IN it_vbap where spras Eq sy-langu AND msehi EQ it_vbap-zieme.
+
+LOOP at it_vbap into wa_vbap.
+  READ TABLE it_t006a INTO wa_t006a with key msehi = wa_vbap-zieme.
+
+  MOVE-CORRESPONDING wa_vbap TO wa_item.
+MOVE-CORRESPONDING wa_t006a TO wa_item.
+APPEND wa_item TO e_item.
+CLEAR wa_item.
+ENDLOOP.
+
+
+
+
+ENDFUNCTION.
+
+
+------------------------------------------------------------------------------
+
+FUNCTION Z_ANAG_WRITE2.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IT_ITEM_DETAILS) TYPE  ZANAGHA_T_ITEM
+*"----------------------------------------------------------------------
+
+DATA : wa_item LIKE LINE OF it_item_details.
+LOOP AT it_item_details into wa_item.
+*  READ TABLE it_t006a INTO wa_t006a WITH KEY msehi = wa_vbap-zieme.
+  AT FIRST.
+  WRITE :/ 'Item',
+       20 'Material',
+       35 'ItemDesc',
+       60 'Order Qty' ,
+       80 'UoM',
+       100'NetVal'.
+  ENDAT.
+   WRITE : / wa_item-posnr,
+            20 wa_item-pstyv,
+            35  wa_item-arktx,
+            50 wa_item-kwmeng,
+            80 wa_item-msehl,
+            90 wa_item-netwr.
+
+   ENDLOOP.
+
+
+
+ENDFUNCTION.

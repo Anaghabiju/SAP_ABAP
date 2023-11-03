@@ -1,0 +1,24 @@
+REPORT ZANAGHA_FUNCTION.
+
+DATA st_makt type makt.
+PARAMETERS p_matnr TYPE makt-matnr.
+
+CALL FUNCTION 'ZANAGHA_FM'
+  EXPORTING
+    im_matnr               = p_matnr
+ IMPORTING
+   EX_MATNR               = st_makt
+ EXCEPTIONS
+   INVALID_MATERIAL       = 1
+   OTHERS                 = 2
+          .
+IF sy-subrc <> 0.
+* Implement suitable error handling here
+  CASE sy-subrc.
+    WHEN 1.
+      MESSAGE 'Invalid message' TYPE 'E'.
+
+    WHEN OTHERS.
+  ENDCASE.
+ENDIF.
+   WRITE : st_makt-matnr, st_makt-spras, st_makt-maktx.

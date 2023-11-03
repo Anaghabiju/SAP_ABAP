@@ -1,0 +1,29 @@
+REPORT ZANAGHA_PROCPROG.
+
+DATA v_doc TYPE i.
+DATA v_tag TYPE i.
+
+CALL FUNCTION 'ZANAGHA_FM_PROCPROG'
+ IMPORTING
+   NEXT_NUM       = v_doc
+          .
+CALL FUNCTION 'ZANAGHA_FM_PROCPROG'
+ IMPORTING
+   NEXT_NUM       = v_tag
+          .
+
+CALL FUNCTION 'ZANAGHA_FM_PROCPROG'
+ IMPORTING
+   NEXT_NUM       = v_doc
+          .
+CALL FUNCTION 'ZANAGHA_FM_PROCPROG'
+ IMPORTING
+   NEXT_NUM       = v_tag
+          .
+
+CALL FUNCTION 'ZANAGHA_FM_PROCPROG'
+ IMPORTING
+   NEXT_NUM       = v_doc
+          .
+
+WRITE v_doc.

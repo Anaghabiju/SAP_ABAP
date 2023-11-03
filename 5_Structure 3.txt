@@ -1,0 +1,19 @@
+REPORT ZANAGHA_STRUCTURE2.
+
+TYPES : BEGIN OF ty_marc,
+    matnr type marc-matnr,
+    werks type marc-werks,
+  END OF ty_marc.
+
+DATA st_data TYPE ty_marc.
+
+DATA v_name TYPE t001w-name1.
+
+PARAMETERS p_marc TYPE marc-matnr.
+
+select matnr werks from marc into st_data where matnr eq p_marc.
+SELECT SINGLE name1 from t001w into v_name WHERE werks eq st_data-werks.
+WRITE :/ st_data-matnr,
+      st_data-werks,
+      v_name.
+ENDSELECT.

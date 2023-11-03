@@ -1,0 +1,113 @@
+REPORT ZANAGHA_SALESDOC.
+
+* Create a sales document
+
+*TYPES : BEGIN OF ty_vbak,
+*    vbeln TYPE vbak-vbeln,
+*    audat TYPE vbak-audat,
+*    netwr TYPE vbak-netwr,
+*    kunnr TYPE vbak-kunnr,
+*  END OF ty_vbak.
+*
+*TYPES : BEGIN OF ty_vbap,
+*    posnr type vbap-posnr,
+*    matnr type vbap-matnr,
+*    arktx TYPE vbap-arktx,
+*    kwmeng TYPE vbap-kwmeng,
+*    zieme TYPE vbap-zieme,
+*    netwr TYPE vbap-netwr,
+*  END OF ty_vbap.
+*
+*DATA st_vbap TYPE ty_vbap.
+*DATA st_vbak TYPE ty_vbak.
+*
+*PARAMETERS : p_num TYPE vbak-vbeln.
+**             p_date TYPE vbak-audat,
+**             p_value TYPE vbak-netwr,
+**             p_sop TYPE vbak-kunnr.
+*
+*
+*select SINGLE vbeln audat netwr kunnr from vbak into st_vbak where vbeln eq p_num.
+*
+*WRITE :/ 'Document number :' , st_vbak-vbeln,
+*       / 'Document Date :' , st_vbak-audat,
+*       /  'Net Value :' , st_vbak-netwr,
+*       /  'Sold to Party :' , st_vbak-kunnr.
+*
+*WRITE :/  'Item',
+*          20 'Material',
+*          35 'Item Description',
+*          60 'Order Quantity',
+*          80 'UoM',
+*          100 'NetValue'.
+*
+*select posnr matnr arktx kwmeng zieme netwr from vbap into st_vbap where vbeln eq p_num.
+*
+*WRITE :/  st_vbap-posnr,
+*         20  st_vbap-matnr,
+*       35  st_vbap-arktx,
+*         60  st_vbap-kwmeng,
+*         80  st_vbap-zieme,
+*         90  st_vbap-netwr.
+*  ENDSELECT.
+
+*Rewrite some outputs with other fields from other tables
+
+TYPES : BEGIN OF ty_vbak,
+    vbeln TYPE vbak-vbeln,
+    audat TYPE vbak-audat,
+    netwr TYPE vbak-netwr,
+    kunnr TYPE vbak-kunnr,
+  END OF ty_vbak.
+
+TYPES : BEGIN OF ty_vbap,
+    posnr type vbap-posnr,
+    matnr type vbap-matnr,
+    arktx TYPE vbap-arktx,
+    kwmeng TYPE vbap-kwmeng,
+    zieme TYPE vbap-zieme,
+    netwr TYPE vbap-netwr,
+  END OF ty_vbap.
+
+*TYPES : BEGIN OF ty_kna1,
+*     name TYPE kna1-name1,
+*  END OF ty_kna1.
+*
+*TYPES : BEGIN OF ty_t006,
+*    uom TYPE t006-msehi,
+*  END OF ty_t006.
+
+DATA st_vbap TYPE ty_vbap.
+DATA st_vbak TYPE ty_vbak.
+DATA name TYPE kna1-name1.
+DATA uom TYPE t006a-mseht.
+
+PARAMETERS : p_num TYPE vbak-vbeln.
+
+
+select SINGLE vbeln audat netwr kunnr from vbak into st_vbak where vbeln eq p_num.
+  SELECT single name1 from kna1 into name WHERE kunnr eq st_vbak-kunnr.
+
+WRITE :/ 'Document number :' , st_vbak-vbeln,
+       / 'Document Date :' , st_vbak-audat,
+       /  'Net Value :' , st_vbak-netwr,
+       /  'Sold to Party :' , name.
+
+WRITE :/  'Item',
+          20 'Material',
+          35 'Item Description',
+          70 'Order Quantity',
+          90 'UoM',
+          110 'NetValue'.
+
+select posnr matnr arktx kwmeng zieme netwr from vbap into st_vbap where vbeln eq p_num.
+  "SELECT SINGLE mseht from t006a into uom where msehi eq st_vbap-zieme.
+  SELECT SINGLE msehi from t006a into uom where spras eq sy-langu and msehi eq st_vbap-zieme.
+
+WRITE :/  st_vbap-posnr,
+         20  st_vbap-matnr,
+       35  st_vbap-arktx,
+         60  st_vbap-kwmeng,
+         90  uom,
+         100  st_vbap-netwr.
+  ENDSELECT.

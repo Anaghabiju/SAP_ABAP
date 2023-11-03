@@ -1,0 +1,14 @@
+REPORT ZANAGHA_PROCEDURE_CALL.
+
+*PERFORM display in PROGRAM ZANAGHA_Procedure.
+
+*SUBMIT ZANAGHA_Procedure.
+
+DATA d_date TYPE sy-datum.
+d_date = sy-datum.
+WRITE d_date.
+AT LINE-SELECTION.
+*  Export d_date to MEMORY  id 'ANAGHA'.
+*  set PARAMETER ID 'Anag' field d_date.
+  SUBMIT ZANAGHA_Procedure AND RETURN.
+  WRITE 'END'.

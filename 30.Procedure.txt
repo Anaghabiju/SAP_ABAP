@@ -1,0 +1,30 @@
+REPORT ZANAGHA_PROCEDURE.
+
+*DATA d_date type sy-datum.
+*
+*INITIALIZATION.   "when this used d_date cannot be accessed by another session
+**LOAD-OF-PROGRAM.  "used to access date by another session
+*d_date = sy-datum.
+*
+*START-OF-SELECTION.
+*
+*PERFORM display.
+**WRITE d_date.
+**&---------------------------------------------------------------------*
+**& Form display
+**&---------------------------------------------------------------------*
+**& text
+**&---------------------------------------------------------------------*
+**& -->  p1        text
+**& <--  p2        text
+**&---------------------------------------------------------------------*
+*FORM display .
+*  WRITE d_date.
+*ENDFORM.
+
+*DATA p_date TYPE sy-datum.
+**import p_date from MEMORY id 'ANAGHA'.
+*get PARAMETER ID 'Anag' field p_date.
+*WRITE p_date.
+
+WRITE 'anagha'.
