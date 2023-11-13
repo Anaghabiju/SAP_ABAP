@@ -1,0 +1,12 @@
+REPORT ZANAGHA_OOP_INHERITENCE.
+
+DATA :o_sup TYPE REF TO ZCL_ANAGHA_SUPCLASS,
+      o_sub TYPE REF TO ZCL_ANAGHA_SUBCLASS.
+
+CREATE OBJECT : o_sup, o_sub.
+*o_sup = o_sub.
+o_sup->get_mileage( ).
+o_sub->get_mileage( ).
+o_sub->get_seat( ).
+
+WRITE 'end'.
